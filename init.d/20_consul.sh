@@ -36,7 +36,7 @@ if [ -z $ADVERTISE ] && [ $NETS_COUNT -gt 1 ]; then
         ADVERTISE=127.0.0.1
 
         CONSUL_IP=$(dig a +short $CONSUL_HOST)
-        ADVERTISE=$(ip -o route get $CONSUL_IP | awk '{print $5}')
+        ADVERTISE=$(ip -o route get $CONSUL_IP | grep -oE 'src ([^\s]*)' | awk '{print $2}')
 
         echo "Using default route to consul interface: $ADVERTISE"
     fi
