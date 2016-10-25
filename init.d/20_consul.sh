@@ -35,7 +35,7 @@ if [ -z $ADVERTISE ] && [ $NETS_COUNT -gt 1 ]; then
         echo "No ADVERTISE or ADVERTISE_INTERFACE adress set, and more than 2 global scope networks available, trying to detect."
         ADVERTISE=127.0.0.1
 
-        CONSUL_IP=$(dig a +short $CONSUL_HOST)
+        CONSUL_IP=$(getent hosts $CONSUL_HOST | awk '{print $1}')
         ADVERTISE=$(ip -o route get $CONSUL_IP | grep -oE 'src ([^\s]*)' | awk '{print $2}')
 
         echo "Using default route to consul interface: $ADVERTISE"
